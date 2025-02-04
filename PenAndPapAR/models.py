@@ -27,4 +27,5 @@ class CharacterStats(models.Model):
     character_background = models.CharField(max_length=50)
     character_subclass = models.CharField(max_length=50)
     character_level = models.PositiveSmallIntegerField(default=3)
+
     character_conditions = models.CharField(max_length=50)
