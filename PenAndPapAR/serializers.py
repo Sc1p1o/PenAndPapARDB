@@ -1,6 +1,7 @@
 # PenAndPapAR/serializers.py
 from rest_framework import serializers
-from .models import CharacterStats
+
+from PenAndPapAR.models import CharacterStats
 
 
 class CharacterStatsSerializer(serializers.ModelSerializer):

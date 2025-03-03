@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import CharacterStatsList, CharacterStatsDetail
+from PenAndPapAR.views import CharacterStatsView
 
 urlpatterns = [
-    path('character-stats/', CharacterStatsList.as_view(), name='character-stats-list'),
-    path('character-stats/<int:pk>/', CharacterStatsDetail.as_view(), name='character-stats-detail'),
+    path('stats/', CharacterStatsView.as_view(), name='char-stats'),
 ]
