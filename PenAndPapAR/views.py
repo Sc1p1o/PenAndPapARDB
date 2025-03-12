@@ -25,6 +25,7 @@ character_stats_template = {
     "character_alignment": None,
     "character_conditions": None,
     "character_source_link": None,
+    "character_proficiency_bonus": 2
 }
 
 attribute_template = {

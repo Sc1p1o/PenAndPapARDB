@@ -12,6 +12,7 @@ class CharacterStats(models.Model):
     character_alignment = models.CharField(max_length=50, null=True)
     character_conditions = models.TextField(null=True)
     character_update_link = models.URLField(null=True)
+    character_proficiency_bonus = models.PositiveSmallIntegerField(default=2, null=True)
 
 class Attributes(models.Model):
     attribute_name = models.CharField(max_length=20)
