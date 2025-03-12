@@ -256,7 +256,6 @@ class CharacterStatsView(APIView):
 
             if hit_points_data:
                 for hit_point_trait in hit_points_data:
-                    print(hit_point_trait)
                     character_hit_points_db.update(**hit_point_trait)
 
 
@@ -266,12 +265,14 @@ class CharacterStatsView(APIView):
                 "stats": CharacterStatsSerializer(character_stats_db, many=True).data,
                 "attributes": AttributesSerializer(character_attributes_db, many=True).data,
                 "ac": ACSerializer(character_ac_db, many=True).data,
-                "saving_throw_proficiencies": SavingThrowProficienciesSerializer(character_saving_throw_proficiencies_db, many=True).data,
+                "saving_throw_proficiencies": SavingThrowProficienciesSerializer(character_saving_throw_proficiencies_db,
+                                                                                 many=True).data,
                 "skills": SkillsSerializer(character_skills_db, many=True).data,
                 "hit_points": HitPointsSerializer(character_hit_points_db, many=True).data,
             }, status=status.HTTP_200_OK)
         except:
-            return Response({"error": "Couldn't find information about character ID"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Couldn't find information about character ID"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 def generate_character_id():
     existing_ids = CharacterStats.objects.values_list('character_id', flat=True).order_by('character_id')
@@ -335,3 +336,16 @@ def generate_character_trait(name_list, trait_data, field):
             )
 
     return missing_traits
+
+def update_character_stats(data, data_db):
+
+    for skill in skills_data:
+        for skill_db in character_skills_db:
+            if skill_db.skill_name == skill["skill_name"]:
+                if "skill_adjustment" in skill:
+                    skill_db.skill_adjustment = skill["skill_adjustment"]
+                if "skill_is_proficient" in skill:
+                    skill_db.skill_is_proficient = skill["skill_is_proficient"]
+                if "skill_is_expertise" in skill:
+                    skill_db.skill_is_expertise = skill["skill_is_expertise"]
+
