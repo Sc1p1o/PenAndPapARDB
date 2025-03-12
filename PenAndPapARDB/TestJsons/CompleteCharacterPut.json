@@ -1,0 +1,269 @@
+{
+  "stats": [
+    {
+      "character_id": "#0002",
+      "character_is_inspired": false,
+      "character_name": null,
+      "character_class": null,
+      "character_race": null,
+      "character_background": null,
+      "character_subclass": null,
+      "character_level": 1,
+      "character_alignment": null,
+      "character_conditions": null,
+      "character_update_link": null
+    }
+  ],
+  "attributes": [
+    {
+      "id": 13,
+      "attribute_name": "strength",
+      "attribute_value": 10,
+      "attribute_adjustment": 0,
+      "attribute_character": "#0002"
+    },
+    {
+      "id": 14,
+      "attribute_name": "dexterity",
+      "attribute_value": 10,
+      "attribute_adjustment": 0,
+      "attribute_character": "#0002"
+    },
+    {
+      "id": 15,
+      "attribute_name": "constitution",
+      "attribute_value": 10,
+      "attribute_adjustment": 0,
+      "attribute_character": "#0002"
+    },
+    {
+      "id": 16,
+      "attribute_name": "intelligence",
+      "attribute_value": 10,
+      "attribute_adjustment": 0,
+      "attribute_character": "#0002"
+    },
+    {
+      "id": 17,
+      "attribute_name": "wisdom",
+      "attribute_value": 10,
+      "attribute_adjustment": 0,
+      "attribute_character": "#0002"
+    },
+    {
+      "id": 18,
+      "attribute_name": "charisma",
+      "attribute_value": 10,
+      "attribute_adjustment": 0,
+      "attribute_character": "#0002"
+    }
+  ],
+  "ac": [
+    {
+      "id": 3,
+      "ac_base": "10",
+      "ac_modified": 0,
+      "ac_character": "#0002"
+    }
+  ],
+  "saving_throw_proficiencies": [
+    {
+      "id": 13,
+      "saving_throw_name": "strength",
+      "saving_throw_adjustment": 0,
+      "saving_throw_is_proficient": false,
+      "saving_throw_proficiency_character": "#0002"
+    },
+    {
+      "id": 14,
+      "saving_throw_name": "dexterity",
+      "saving_throw_adjustment": 0,
+      "saving_throw_is_proficient": false,
+      "saving_throw_proficiency_character": "#0002"
+    },
+    {
+      "id": 15,
+      "saving_throw_name": "constitution",
+      "saving_throw_adjustment": 0,
+      "saving_throw_is_proficient": false,
+      "saving_throw_proficiency_character": "#0002"
+    },
+    {
+      "id": 16,
+      "saving_throw_name": "intelligence",
+      "saving_throw_adjustment": 0,
+      "saving_throw_is_proficient": false,
+      "saving_throw_proficiency_character": "#0002"
+    },
+    {
+      "id": 17,
+      "saving_throw_name": "wisdom",
+      "saving_throw_adjustment": 0,
+      "saving_throw_is_proficient": false,
+      "saving_throw_proficiency_character": "#0002"
+    },
+    {
+      "id": 18,
+      "saving_throw_name": "charisma",
+      "saving_throw_adjustment": 0,
+      "saving_throw_is_proficient": false,
+      "saving_throw_proficiency_character": "#0002"
+    }
+  ],
+  "skills": [
+    {
+      "id": 37,
+      "skill_name": "athletics",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 38,
+      "skill_name": "acrobatics",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 39,
+      "skill_name": "animal_handling",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 40,
+      "skill_name": "arcana",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 41,
+      "skill_name": "deception",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 42,
+      "skill_name": "history",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 43,
+      "skill_name": "insight",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 44,
+      "skill_name": "intimidation",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 45,
+      "skill_name": "investigation",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 46,
+      "skill_name": "medicine",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 47,
+      "skill_name": "nature",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 48,
+      "skill_name": "perception",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 49,
+      "skill_name": "performance",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 50,
+      "skill_name": "persuasion",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 51,
+      "skill_name": "religion",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 52,
+      "skill_name": "sleight_of_hand",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 53,
+      "skill_name": "stealth",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    },
+    {
+      "id": 54,
+      "skill_name": "survival",
+      "skill_adjustment": 0,
+      "skill_is_proficient": false,
+      "skill_is_expertise": false,
+      "skill_character": "#0002"
+    }
+  ],
+  "hit_points": [
+    {
+      "id": 3,
+      "hit_points_current": 40,
+      "hit_points_max": 30,
+      "hit_points_temp": 0,
+      "non_lethal_damage": 0,
+      "hit_points_character": "#0002"
+    }
+  ]
+}

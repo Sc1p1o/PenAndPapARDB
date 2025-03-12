@@ -1,0 +1,32 @@
+{
+    "stats": [
+        {
+            "character_is_inspired": false
+        }
+    ],
+    "attributes": [
+        {
+            "attribute_name": "strength"
+        }
+    ],
+    "ac": [
+        {
+            "ac_base": 10
+        }
+    ],
+    "saving_throw_proficiencies": [
+        {
+            "saving_throw_name": "strength"
+        }
+    ],
+    "skills": [
+        {
+            "skill_name": "athletics"
+        }
+    ],
+    "hit_points": [
+        {
+            "hit_points_current": 30
+        }
+    ]
+}
