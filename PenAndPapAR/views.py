@@ -273,36 +273,6 @@ class CharacterStatsView(APIView):
         except:
             return Response({"error": "Couldn't find information about character ID"}, status=status.HTTP_400_BAD_REQUEST)
 
-
-        try:
-            # Bestehenden Charakter abrufen
-            character = CharacterStatsSerializer.objects.get()
-
-            # Charakterdaten aktualisieren, falls im Request-Body enthalten
-            serializer = CharacterStatsSerializer(character, data=request.data, partial=True)
-            if serializer.is_valid():
-                serializer.save()
-
-            # Attribute aktualisieren, falls sie im Request enthalten sind
-            attributes = request.data.get('attributes')
-            for attr in attributes:
-                # Attribut für den Charakter abrufen
-                try:
-                    attribute = Attributes.objects.get(attribute_name=attr["attribute_name"],
-                                                       attribute_charakter=character)
-
-                    # Attribut-Wert aktualisieren
-                    attribute.attribute_value = attr.get("attribute_value")
-                    attribute.save()
-
-                except Attributes.DoesNotExist:
-                    raise Exception("Attribute not found.")
-
-            return Response({"message": "Character and attributes updated successfully."}, status=status.HTTP_200_OK)
-
-        except CharacterStatsSerializer.DoesNotExist:
-            return Response({"error": "Character not found."}, status=status.HTTP_404_NOT_FOUND)
-
 def generate_character_id():
     existing_ids = CharacterStats.objects.values_list('character_id', flat=True).order_by('character_id')
     min_free_id = 0
