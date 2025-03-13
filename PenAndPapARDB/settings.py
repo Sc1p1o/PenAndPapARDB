@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'PenAndPapAR',
     'rest_framework',
+    'corsheaders',
+
 ]
 
 MIDDLEWARE = [
@@ -49,7 +52,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True  # Oder spezifische Origins einfügen
 
 ROOT_URLCONF = 'PenAndPapARDB.urls'
 

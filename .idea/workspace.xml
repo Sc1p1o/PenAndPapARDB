@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e903e1d0-565b-486a-9b2b-44df1927bf6e" name="Changes" comment="finished main server sided CRUD Operations">
+      <change afterPath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/CharacterGet.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/CompleteCharacterPost.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PenAndPapAR/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/PenAndPapAR/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PenAndPapAR/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/PenAndPapAR/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/CompleteCharacterPut.json" beforeDir="false" afterPath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/CompleteCharacterPut.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/EmptyCharacterCompletePost.json" beforeDir="false" afterPath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/EmptyCharacterCompletePost.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/MinimalCharacterPut.json" beforeDir="false" afterPath="$PROJECT_DIR$/PenAndPapARDB/TestJsons/MinimalCharacterPut.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PenAndPapARDB/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/PenAndPapARDB/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,6 +130,8 @@
       <workItem from="1741348594924" duration="3054000" />
       <workItem from="1741617552497" duration="634000" />
       <workItem from="1741739395449" duration="28125000" />
+      <workItem from="1741789661337" duration="14230000" />
+      <workItem from="1741829888968" duration="13296000" />
     </task>
     <task id="LOCAL-00001" summary="InnitialCommit">
       <option name="closed" value="true" />
@@ -212,7 +221,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741767809212</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="finished main server sided CRUD Operations">
+      <option name="closed" value="true" />
+      <created>1741789675622</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1741789675622</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

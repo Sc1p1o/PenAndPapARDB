@@ -25,7 +25,15 @@ character_stats_template = {
     "character_alignment": None,
     "character_conditions": None,
     "character_source_link": None,
-    "character_proficiency_bonus": 2
+    "character_proficiency_bonus": 2,
+
+    "character_speed": 30,
+    "character_gender": None,
+    "character_death_save_success": None,
+    "character_death_save_failure": None,
+    "character_exhaustion": None,
+    "character_initiative_adjustment": None,
+    "character_proficiency_bonus_adjustment": 0
 }
 
 attribute_template = {
@@ -71,6 +79,7 @@ templates = [
 
 class CharacterStatsView(APIView):
     def get(self, request, *args, **kwargs):
+        print("GET Request Arrived")
         character_id = request.GET.get('character_id', "#0000")
 
 
@@ -194,8 +203,8 @@ class CharacterStatsView(APIView):
 
 
     def put(self, request):
-
         try:
+            print("PUT Request Arrived")
             data = request.data
             stats_data = request.data.get("stats")
             attributes_data = request.data.get("attributes")
@@ -224,10 +233,10 @@ class CharacterStatsView(APIView):
                         if attr_db.attribute_name == attr["attribute_name"]:
                             if "attribute_value" in attr:
                                 attr_db.attribute_value = attr["attribute_value"]
-                                attr_db.save()
                             if "attribute_adjustment" in attr:
                                 attr_db.attribute_adjustment = attr["attribute_adjustment"]
 
+                            attr_db.save()
                             break
 
             if ac_data:
@@ -239,9 +248,12 @@ class CharacterStatsView(APIView):
                     for saving_throw_proficiency_db in character_saving_throw_proficiencies_db:
                         if saving_throw_proficiency_db.saving_throw_name == saving_throw_proficiency["saving_throw_name"]:
                             if "saving_throw_adjustment" in saving_throw_proficiency:
-                                saving_throw_proficiency_db.saving_throw_adjustment = saving_throw_proficiency["saving_throw_adjustment"]
+                                saving_throw_proficiency_db.saving_throw_adjustment = saving_throw_proficiency[
+                                    "saving_throw_adjustment"]
                             if "saving_throw_is_proficient" in saving_throw_proficiency:
-                                saving_throw_proficiency_db.saving_throw_is_proficient = saving_throw_proficiency["saving_throw_is_proficient"]
+                                saving_throw_proficiency_db.saving_throw_is_proficient = saving_throw_proficiency[
+                                    "saving_throw_is_proficient"]
+                            saving_throw_proficiency_db.save()
                             break
             if skills_data:
                 for skill in skills_data:
@@ -253,13 +265,12 @@ class CharacterStatsView(APIView):
                                 skill_db.skill_is_proficient = skill["skill_is_proficient"]
                             if "skill_is_expertise" in skill:
                                 skill_db.skill_is_expertise = skill["skill_is_expertise"]
+                            skill_db.save()
+                            break
 
             if hit_points_data:
                 for hit_point_trait in hit_points_data:
                     character_hit_points_db.update(**hit_point_trait)
-
-
-
 
             return Response({
                 "stats": CharacterStatsSerializer(character_stats_db, many=True).data,
@@ -270,9 +281,8 @@ class CharacterStatsView(APIView):
                 "skills": SkillsSerializer(character_skills_db, many=True).data,
                 "hit_points": HitPointsSerializer(character_hit_points_db, many=True).data,
             }, status=status.HTTP_200_OK)
-        except:
-            return Response({"error": "Couldn't find information about character ID"},
-                            status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": f"An error occurred: {e}"}, status=status.HTTP_400_BAD_REQUEST)
 
 def generate_character_id():
     existing_ids = CharacterStats.objects.values_list('character_id', flat=True).order_by('character_id')

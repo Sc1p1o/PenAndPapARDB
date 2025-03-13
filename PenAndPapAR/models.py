@@ -1,18 +1,28 @@
 from django.db import models
+from django.utils.functional import empty
+
 
 class CharacterStats(models.Model):
     character_id = models.CharField(max_length=50, primary_key=True)
     character_is_inspired = models.BooleanField(default=False, null=True)
-    character_name = models.CharField(max_length=50, null=True)
-    character_class = models.CharField(max_length=50, null=True)
-    character_race = models.CharField(max_length=50, null=True)
-    character_background = models.CharField(max_length=50, null=True)
-    character_subclass = models.CharField(max_length=50, null=True)
+    character_name = models.CharField(max_length=50, null=True, blank=True)
+    character_class = models.CharField(max_length=50, null=True, blank=True)
+    character_race = models.CharField(max_length=50, null=True, blank=True)
+    character_background = models.CharField(max_length=50, null=True, blank=True)
+    character_subclass = models.CharField(max_length=50, null=True, blank=True)
     character_level = models.PositiveSmallIntegerField(default=3, null=True)
-    character_alignment = models.CharField(max_length=50, null=True)
-    character_conditions = models.TextField(null=True)
-    character_update_link = models.URLField(null=True)
-    character_proficiency_bonus = models.PositiveSmallIntegerField(default=2, null=True)
+    character_alignment = models.CharField(max_length=50, null=True, blank=True)
+    character_conditions = models.TextField(null=True, blank=True)
+    character_update_link = models.URLField(null=True, blank=True)
+    character_proficiency_bonus = models.PositiveSmallIntegerField(default=2, null=True, blank=True)
+
+    character_gender = models.CharField(max_length=50, null=True, blank=True)
+    character_death_save_success = models.PositiveSmallIntegerField(default=0, null=True)
+    character_death_save_failure = models.PositiveSmallIntegerField(default=0, null=True)
+    character_exhaustion = models.PositiveSmallIntegerField(default=0, null=True)
+    character_speed = models.PositiveSmallIntegerField(default=30, null=True)
+    character_initiative_adjustment = models.PositiveSmallIntegerField(default=0, null=True)
+    character_proficiency_bonus_adjustment = models.PositiveSmallIntegerField(default=0, null=True)
 
 class Attributes(models.Model):
     attribute_name = models.CharField(max_length=20)
