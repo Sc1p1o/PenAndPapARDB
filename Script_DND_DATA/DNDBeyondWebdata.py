@@ -73,27 +73,38 @@ class DnDBeyondCharacterService:
 
     @staticmethod
     def calculate_attribute_value(base_value, modifiers, stat_id, stat_name):
-        # Addiere alle Modifikatoren für das Attribut
         modifier_value = sum(
             modifier.get("value", 0)
             for modifier in modifiers
             if (
-                modifier.get("subType", "").endswith(f"stats-{stat_id}") or  # stats-1, stats-2 usw.
-                modifier.get("subType", "").endswith(f"{stat_name}-score") or  # strength-score, dexterity-score usw.
-                modifier.get("subType", "").endswith(f"{stat_name}-modifier")  # strength-modifier, dexterity-modifier usw.
+                modifier.get("subType", "").endswith(f"stats-{stat_id}") or
+                modifier.get("subType", "").endswith(f"{stat_name}-score") or
+                modifier.get("subType", "").endswith(f"{stat_name}-modifier")
             )
         )
         return base_value + modifier_value
 
     @staticmethod
     def calculate_speed(base_speed, modifiers):
-        # Addiere alle Modifikatoren für die Geschwindigkeit
-        speed_modifiers = sum(
-            modifier.get("value", 0)
-            for modifier in modifiers
-            if modifier.get("subType", "").endswith("speed")
-        )
+        speed_modifiers = 0
+        for modifier in modifiers:
+            if (
+                "speed" in modifier.get("subType", "").lower() or
+                modifier.get("type") == "bonus" and "speed" in modifier.get("friendlySubtypeName", "").lower()
+            ):
+                value = modifier.get("value", 0)
+                if value is not None:
+                    speed_modifiers += value
         return base_speed + speed_modifiers
+
+    @staticmethod
+    def calculate_skill_value(attribute_modifier, proficiency_bonus, is_proficient, is_expertise):
+        skill_value = attribute_modifier
+        if is_proficient:
+            skill_value += proficiency_bonus
+        if is_expertise:
+            skill_value += proficiency_bonus  # Expertise verdoppelt den Proficiency-Bonus
+        return skill_value
 
     @staticmethod
     def print_modifiers(modifiers):
@@ -106,6 +117,25 @@ class DnDBeyondCharacterService:
             print(f"  ID: {modifier.get('id', 'Keine ID')}")
             print(f"  Beschreibung: {modifier.get('friendlySubtypeName', 'Keine Beschreibung')}")
             print()
+
+    @staticmethod
+    def apply_proficiencies_to_attributes(attributes, modifiers, proficiency_bonus):
+        """
+        Wendet Proficiencies auf die Attribute an, bevor die Attributswerte berechnet werden.
+        """
+        for attribute in attributes:
+            attribute_name = attribute["attribute_name"]
+            
+            # Überprüfe, ob der Charakter in diesem Attribut proficient ist (z. B. für Rettungswürfe)
+            is_proficient = any(
+                modifier.get("type") == "proficiency" and
+                modifier.get("subType") == f"saves-{attribute_name}"
+                for modifier in modifiers
+            )
+            
+            # Wenn proficient, füge den Proficiency-Bonus hinzu
+            if is_proficient:
+                attribute["attribute_value"] += proficiency_bonus
 
     @staticmethod
     def parse_character_data(data):
@@ -192,6 +222,9 @@ class DnDBeyondCharacterService:
                     "attribute_adjustment": 0  # Kann angepasst werden, falls nötig
                 })
 
+        # Proficiencies auf Attribute anwenden
+        DnDBeyondCharacterService.apply_proficiencies_to_attributes(attributes, modifiers, proficiency_bonus)
+
         # Debugging: Gib die berechneten Attributwerte aus
         print("Berechnete Attribute:", attributes)
 
@@ -206,14 +239,28 @@ class DnDBeyondCharacterService:
         # Saving Throws
         saving_throws = []
         for stat_id, stat_name in stat_names.items():
+            # Finde den Attributsmodifikator für den Rettungswurf
+            attribute_modifier = 0
+            for attribute in attributes:
+                if attribute["attribute_name"] == stat_name:
+                    attribute_modifier = (attribute["attribute_value"] - 10) // 2  # Berechne den Modifikator
+                    break
+            
+            # Überprüfe, ob der Charakter in diesem Rettungswurf proficient ist
             is_proficient = any(
                 modifier.get("type") == "proficiency" and
                 modifier.get("subType") == f"saves-{stat_name}"
                 for modifier in modifiers
             )
+            
+            # Berechne den Rettungswurf-Wert
+            saving_throw_value = attribute_modifier
+            if is_proficient:
+                saving_throw_value += proficiency_bonus
+            
             saving_throws.append({
                 "saving_throw_name": stat_name,
-                "saving_throw_adjustment": 0,  # Kann angepasst werden, falls nötig
+                "saving_throw_adjustment": saving_throw_value,
                 "saving_throw_is_proficient": is_proficient
             })
 
@@ -240,19 +287,35 @@ class DnDBeyondCharacterService:
         }
         skills = []
         for skill_name, ability in skill_names.items():
+            # Finde den Attributsmodifikator für den Skill
+            attribute_modifier = 0
+            for attribute in attributes:
+                if attribute["attribute_name"] == ability:
+                    attribute_modifier = (attribute["attribute_value"] - 10) // 2  # Berechne den Modifikator
+                    break
+            
+            # Überprüfe, ob der Charakter in diesem Skill proficient ist
             is_proficient = any(
                 modifier.get("type") == "proficiency" and
                 modifier.get("subType") == f"skills-{skill_name}"
                 for modifier in modifiers
             )
+            
+            # Überprüfe, ob der Charakter in diesem Skill Expertise hat
             is_expertise = any(
                 modifier.get("type") == "expertise" and
                 modifier.get("subType") == f"skills-{skill_name}"
                 for modifier in modifiers
             )
+            
+            # Berechne den Skill-Wert
+            skill_value = DnDBeyondCharacterService.calculate_skill_value(
+                attribute_modifier, proficiency_bonus, is_proficient, is_expertise
+            )
+            
             skills.append({
                 "skill_name": skill_name,
-                "skill_adjustment": 0,  # Kann angepasst werden, falls nötig
+                "skill_adjustment": skill_value,
                 "skill_is_proficient": is_proficient,
                 "skill_is_expertise": is_expertise
             })
