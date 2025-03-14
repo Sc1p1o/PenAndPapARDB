@@ -119,25 +119,6 @@ class DnDBeyondCharacterService:
             print()
 
     @staticmethod
-    def apply_proficiencies_to_attributes(attributes, modifiers, proficiency_bonus):
-        """
-        Wendet Proficiencies auf die Attribute an, bevor die Attributswerte berechnet werden.
-        """
-        for attribute in attributes:
-            attribute_name = attribute["attribute_name"]
-            
-            # Überprüfe, ob der Charakter in diesem Attribut proficient ist (z. B. für Rettungswürfe)
-            is_proficient = any(
-                modifier.get("type") == "proficiency" and
-                modifier.get("subType") == f"saves-{attribute_name}"
-                for modifier in modifiers
-            )
-            
-            # Wenn proficient, füge den Proficiency-Bonus hinzu
-            if is_proficient:
-                attribute["attribute_value"] += proficiency_bonus
-
-    @staticmethod
     def parse_character_data(data):
         if not data:
             return {"error": "Keine Daten gefunden."}
@@ -200,6 +181,9 @@ class DnDBeyondCharacterService:
         initiative_adjustment = character.get("modifiers", {}).get("initiative", 0)
         proficiency_bonus_adjustment = character.get("modifiers", {}).get("proficiencyBonusAdjustment", 0)
 
+        # Inspiration
+        is_inspired = character.get("inspiration", False)  # Extrahiere das Inspiration-Flag
+
         # Attribute
         stat_names = {
             1: "strength",
@@ -221,9 +205,6 @@ class DnDBeyondCharacterService:
                     "attribute_value": total_value,
                     "attribute_adjustment": 0  # Kann angepasst werden, falls nötig
                 })
-
-        # Proficiencies auf Attribute anwenden
-        DnDBeyondCharacterService.apply_proficiencies_to_attributes(attributes, modifiers, proficiency_bonus)
 
         # Debugging: Gib die berechneten Attributwerte aus
         print("Berechnete Attribute:", attributes)
@@ -331,7 +312,7 @@ class DnDBeyondCharacterService:
         # JSON-Struktur
         return {
             "stats": [{
-                "character_is_inspired": False,  # Kann angepasst werden, falls nötig
+                "character_is_inspired": is_inspired,  # Inspiration-Flag
                 "character_name": name,
                 "character_class": classes,
                 "character_race": race,
@@ -365,6 +346,10 @@ class DnDBeyondCharacterService:
         char_data = self.fetch_character_data(character_id)
         if not char_data:
             return {"error": "Charakterdaten konnten nicht abgerufen werden."}
+        
+        # Debugging: Gib die gesamten Charakterdaten aus
+        import json
+        print(json.dumps(char_data, indent=4))
         
         return self.parse_character_data(char_data)
 
