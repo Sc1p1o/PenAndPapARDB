@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e903e1d0-565b-486a-9b2b-44df1927bf6e" name="Changes" comment="added requirements.txt">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e903e1d0-565b-486a-9b2b-44df1927bf6e" name="Changes" comment="added jkerz requirements.txt for API Reading, and Tensorflow Picture Reading" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,6 +50,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Django Server.PenAndPapARDB.executor": "Run",
     "Python.DNDBeyondWebdata.executor": "Run",
+    "Python.DNDPictureDATA.executor": "Run",
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -180,7 +179,7 @@
       <workItem from="1741886419241" duration="99000" />
       <workItem from="1741890616130" duration="794000" />
       <workItem from="1741914136122" duration="1258000" />
-      <workItem from="1741945920673" duration="771000" />
+      <workItem from="1741945920673" duration="1695000" />
     </task>
     <task id="LOCAL-00001" summary="InnitialCommit">
       <option name="closed" value="true" />
@@ -294,7 +293,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741890682345</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="added jkerz requirements.txt for API Reading, and Tensorflow Picture Reading">
+      <option name="closed" value="true" />
+      <created>1741947514245</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1741947514246</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,9 +312,11 @@
     <MESSAGE value="added Items and feats" />
     <MESSAGE value="finished main server sided CRUD Operations" />
     <MESSAGE value="added requirements.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="added requirements.txt" />
+    <MESSAGE value="added jkerz requirements.txt for API Reading, and Tensorflow Picture Reading" />
+    <option name="LAST_COMMIT_MESSAGE" value="added jkerz requirements.txt for API Reading, and Tensorflow Picture Reading" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PenAndPapARDB$DNDBeyondWebdata.coverage" NAME="DNDBeyondWebdata Coverage Results" MODIFIED="1741946365234" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script_DND_DATA" />
+    <SUITE FILE_PATH="coverage/PenAndPapARDB$DNDPictureDATA.coverage" NAME="DNDPictureDATA Coverage Results" MODIFIED="1741947160393" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script_DND_DATA" />
   </component>
 </project>
