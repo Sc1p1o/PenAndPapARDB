@@ -57,6 +57,21 @@ class DnDBeyondCharacterService:
         return alignment_mapping.get(alignment_id, "Unbekannt")
 
     @staticmethod
+    def calculate_proficiency_bonus(level):
+        if level < 1:
+            return 0
+        elif level <= 4:
+            return 2
+        elif level <= 8:
+            return 3
+        elif level <= 12:
+            return 4
+        elif level <= 16:
+            return 5
+        else:
+            return 6
+
+    @staticmethod
     def calculate_attribute_value(base_value, modifiers, stat_id, stat_name):
         # Addiere alle Modifikatoren für das Attribut
         modifier_value = sum(
@@ -69,6 +84,16 @@ class DnDBeyondCharacterService:
             )
         )
         return base_value + modifier_value
+
+    @staticmethod
+    def calculate_speed(base_speed, modifiers):
+        # Addiere alle Modifikatoren für die Geschwindigkeit
+        speed_modifiers = sum(
+            modifier.get("value", 0)
+            for modifier in modifiers
+            if modifier.get("subType", "").endswith("speed")
+        )
+        return base_speed + speed_modifiers
 
     @staticmethod
     def print_modifiers(modifiers):
@@ -91,15 +116,26 @@ class DnDBeyondCharacterService:
         
         # Sammle Modifikatoren aus allen relevanten Quellen
         modifiers = []
-        for modifier_type in ["race", "feats", "magic-items", "class", "background"]:  # Füge "background" hinzu
+        for modifier_type in ["race", "feats", "magic-items", "class", "background"]:
             modifiers.extend(character.get("modifiers", {}).get(modifier_type, []))
 
         # Debugging: Gib die Modifikatoren aus
         DnDBeyondCharacterService.print_modifiers(modifiers)
 
+        # Charakterlevel berechnen
+        level = sum(cls.get("level", 0) for cls in character.get("classes", []))
+        
+        # Proficiency-Bonus basierend auf dem Level berechnen
+        proficiency_bonus = DnDBeyondCharacterService.calculate_proficiency_bonus(level)
+
+        # Basisgeschwindigkeit (z. B. 30 Fuß für die meisten Rassen)
+        base_speed = character.get("race", {}).get("speed", {}).get("walk", 30)
+        
+        # Geschwindigkeit unter Berücksichtigung von Modifikatoren berechnen
+        speed = DnDBeyondCharacterService.calculate_speed(base_speed, modifiers)
+
         # Allgemeine Charakterdaten
         name = character.get("name", "Unbekannt")
-        level = sum(cls.get("level", 0) for cls in character.get("classes", []))
         race = character.get("race", {}).get("fullName", "Unbekannt")
         background = character.get("background", {}).get("definition", {}).get("name", "Unbekannt") if character.get("background") else "Unbekannt"
         classes = ", ".join(f"{cls.get('definition', {}).get('name', 'Unbekannt')}" for cls in character.get("classes", []))
@@ -127,8 +163,6 @@ class DnDBeyondCharacterService:
         conditions_str = ", ".join(conditions) if conditions else "Keine"
 
         update_link = f"https://www.dndbeyond.com/characters/{character.get('id', '')}"
-        proficiency_bonus = character.get("modifiers", {}).get("proficiencyBonus", 2)
-        speed = character.get("race", {}).get("speed", {}).get("walk", 30)
         gender = character.get("gender", "Unbekannt")
         death_save_success = character.get("deathSaves", {}).get("successes", 0)
         death_save_failure = character.get("deathSaves", {}).get("failures", 0)
