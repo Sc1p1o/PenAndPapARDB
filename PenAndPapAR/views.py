@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from ViewsHelper.DNDBeyondWebdata import DnDBeyondCharacterService
+
 
 from PenAndPapAR.models import Attributes, CharacterStats, AC, SavingThrowProficiencies, Skills, HitPoints
 from PenAndPapAR.serializers import (
@@ -153,6 +155,15 @@ class CharacterStatsView(APIView):
             url = ""
         else:
             url = data["stats"][0]["character_source_link"]
+            
+            service = DnDBeyondCharacterService()
+            character_info = service.get_character_info(url)
+
+            if "error" in character_info:
+             return Response({"error": character_info["error"]}, status=status.HTTP_400_BAD_REQUEST)
+            
+        
+            data = character_info
             #data = jkerz_char_json
 
         invalid_topic = validate_post_request(topics, data)
