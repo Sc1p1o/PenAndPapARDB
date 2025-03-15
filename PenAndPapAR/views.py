@@ -148,10 +148,18 @@ class CharacterStatsView(APIView):
         saving_throw_proficiencies_data = request.data.get("saving_throw_proficiencies")
         skills_data = request.data.get("skills")
 
+        # test if link is not empty
+        if data["stats"][0]["character_source_link"] == "" or data["stats"][0]["character_source_link"] is None:
+            url = ""
+        else:
+            url = data["stats"][0]["character_source_link"]
+            #data = jkerz_char_json
+
         invalid_topic = validate_post_request(topics, data)
         if(invalid_topic is not None):
             return Response({"error": f"Missing data for topic '{invalid_topic}'."},
                             status=status.HTTP_400_BAD_REQUEST)
+
 
         # generate missing Traits
         attributes_data.extend(generate_character_trait(attribute_name_list, attributes_data, "attribute"))
