@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e903e1d0-565b-486a-9b2b-44df1927bf6e" name="Changes" comment="added jkerz requirements.txt for API Reading, and Tensorflow Picture Reading">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PenAndPapAR/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/PenAndPapAR/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +183,7 @@
       <workItem from="1741914136122" duration="1258000" />
       <workItem from="1741945920673" duration="2392000" />
       <workItem from="1742036098971" duration="1414000" />
-      <workItem from="1742050401434" duration="355000" />
+      <workItem from="1742050401434" duration="1610000" />
     </task>
     <task id="LOCAL-00001" summary="InnitialCommit">
       <option name="closed" value="true" />
@@ -314,7 +313,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741948503303</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="added jkerz requirements.txt for API Reading, and Tensorflow Picture Reading">
+      <option name="closed" value="true" />
+      <created>1742051356408</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1742051356408</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
