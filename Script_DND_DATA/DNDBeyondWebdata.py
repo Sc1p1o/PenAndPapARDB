@@ -108,15 +108,17 @@ class DnDBeyondCharacterService:
 
     @staticmethod
     def print_modifiers(modifiers):
-        print("Modifiers:")
-        for modifier in modifiers:
-            print(f"- Type: {modifier.get('type', 'Unknown')}")
-            print(f"  Subtype: {modifier.get('subType', 'Unknown')}")
-            print(f"  Value: {modifier.get('value', 'No Value')}")
-            print(f"  Source: {modifier.get('entityType', 'Unknown')}")
-            print(f"  ID: {modifier.get('id', 'No ID')}")
-            print(f"  Description: {modifier.get('friendlySubtypeName', 'No Description')}")
-            print()
+        # Debugging: Print modifiers
+        # print("Modifiers:")
+        # for modifier in modifiers:
+        #     print(f"- Type: {modifier.get('type', 'Unknown')}")
+        #     print(f"  Subtype: {modifier.get('subType', 'Unknown')}")
+        #     print(f"  Value: {modifier.get('value', 'No Value')}")
+        #     print(f"  Source: {modifier.get('entityType', 'Unknown')}")
+        #     print(f"  ID: {modifier.get('id', 'No ID')}")
+        #     print(f"  Description: {modifier.get('friendlySubtypeName', 'No Description')}")
+        #     print()
+        pass
 
     @staticmethod
     def parse_character_data(data):
@@ -131,7 +133,7 @@ class DnDBeyondCharacterService:
             modifiers.extend(character.get("modifiers", {}).get(modifier_type, []))
 
         # Debugging: Print modifiers
-        #DnDBeyondCharacterService.print_modifiers(modifiers)
+        # DnDBeyondCharacterService.print_modifiers(modifiers)
 
         # Calculate character level
         level = sum(cls.get("level", 0) for cls in character.get("classes", []))
@@ -207,7 +209,7 @@ class DnDBeyondCharacterService:
                 })
 
         # Debugging: Print calculated attributes
-        #print("Calculated Attributes:", attributes)
+        # print("Calculated Attributes:", attributes)
 
         # Skills
         skill_names = {
@@ -294,10 +296,10 @@ class DnDBeyondCharacterService:
             )
             
             # Debugging: Print modifiers related to saving throws
-            print(f"Checking saving throw: {stat_name} (ID: {stat_id})")
-            for modifier in modifiers:
-                if modifier.get("type") == "proficiency" and "saving-throws" in modifier.get("subType", "").lower():
-                    print(f"Modifier: {modifier.get('subType')}, Value: {modifier.get('value')}")
+            # print(f"Checking saving throw: {stat_name} (ID: {stat_id})")
+            # for modifier in modifiers:
+            #     if modifier.get("type") == "proficiency" and "saving-throws" in modifier.get("subType", "").lower():
+            #         print(f"Modifier: {modifier.get('subType')}, Value: {modifier.get('value')}")
             
             # Calculate the saving throw value
             saving_throw_value = DnDBeyondCharacterService.calculate_skill_or_save_value(
@@ -347,8 +349,8 @@ class DnDBeyondCharacterService:
             return {"error": "Character data could not be retrieved."}
         
         # Debugging: Print the entire character data
-        import json
-        print(json.dumps(char_data, indent=4))
+        # import json
+        # print(json.dumps(char_data, indent=4))
         
         return self.parse_character_data(char_data)
 
