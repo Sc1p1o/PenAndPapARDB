@@ -144,9 +144,7 @@ class CharacterStatsView(APIView):
 
         # prepare and validate data from request
         data = request.data
-        attributes_data = request.data.get("attributes")
-        saving_throw_proficiencies_data = request.data.get("saving_throw_proficiencies")
-        skills_data = request.data.get("skills")
+
 
         # test if link is not empty
         if data["stats"][0]["character_source_link"] == "" or data["stats"][0]["character_source_link"] is None:
@@ -157,14 +155,19 @@ class CharacterStatsView(APIView):
             service = DnDBeyondCharacterService()
             character_info = service.get_character_info(url)
 
+
             if "error" in character_info:
              return Response({"error": character_info["error"]}, status=status.HTTP_400_BAD_REQUEST)
             
-        
             data = character_info
             #data = jkerz_char_json
 
+        attributes_data = data.get("attributes")
+        saving_throw_proficiencies_data = data.get("saving_throw_proficiencies")
+        skills_data = data.get("skills")
+        
         invalid_topic = validate_post_request(topics, data)
+
         if(invalid_topic is not None):
             return Response({"error": f"Missing data for topic '{invalid_topic}'."},
                             status=status.HTTP_400_BAD_REQUEST)
