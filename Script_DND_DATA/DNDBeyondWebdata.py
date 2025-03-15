@@ -1,5 +1,6 @@
 import requests
 import re
+import json
 
 class DnDBeyondCharacterService:
     @staticmethod
@@ -73,52 +74,18 @@ class DnDBeyondCharacterService:
 
     @staticmethod
     def calculate_attribute_value(base_value, modifiers, stat_id, stat_name):
-        modifier_value = sum(
-            modifier.get("value", 0)
-            for modifier in modifiers
-            if (
-                modifier.get("subType", "").endswith(f"stats-{stat_id}") or
-                modifier.get("subType", "").endswith(f"{stat_name}-score") or
-                modifier.get("subType", "").endswith(f"{stat_name}-modifier")
-            )
-        )
-        return base_value + modifier_value
+        # Set all adjustments to 0
+        return base_value
 
     @staticmethod
     def calculate_speed(base_speed, modifiers):
-        speed_modifiers = 0
-        for modifier in modifiers:
-            if (
-                "speed" in modifier.get("subType", "").lower() or
-                modifier.get("type") == "bonus" and "speed" in modifier.get("friendlySubtypeName", "").lower()
-            ):
-                value = modifier.get("value", 0)
-                if value is not None:
-                    speed_modifiers += value
-        return base_speed + speed_modifiers
+        # Set all adjustments to 0
+        return base_speed
 
     @staticmethod
     def calculate_skill_or_save_value(attribute_modifier, proficiency_bonus, is_proficient, is_expertise):
-        value = attribute_modifier
-        if is_proficient:
-            value += proficiency_bonus
-        if is_expertise:
-            value += proficiency_bonus  # Expertise doubles the proficiency bonus
-        return value
-
-    @staticmethod
-    def print_modifiers(modifiers):
-        # Debugging: Print modifiers
-        # print("Modifiers:")
-        # for modifier in modifiers:
-        #     print(f"- Type: {modifier.get('type', 'Unknown')}")
-        #     print(f"  Subtype: {modifier.get('subType', 'Unknown')}")
-        #     print(f"  Value: {modifier.get('value', 'No Value')}")
-        #     print(f"  Source: {modifier.get('entityType', 'Unknown')}")
-        #     print(f"  ID: {modifier.get('id', 'No ID')}")
-        #     print(f"  Description: {modifier.get('friendlySubtypeName', 'No Description')}")
-        #     print()
-        pass
+        # Set all adjustments to 0
+        return 0
 
     @staticmethod
     def parse_character_data(data):
@@ -131,9 +98,6 @@ class DnDBeyondCharacterService:
         modifiers = []
         for modifier_type in ["race", "feats", "magic-items", "class", "background"]:
             modifiers.extend(character.get("modifiers", {}).get(modifier_type, []))
-
-        # Debugging: Print modifiers
-        # DnDBeyondCharacterService.print_modifiers(modifiers)
 
         # Calculate character level
         level = sum(cls.get("level", 0) for cls in character.get("classes", []))
@@ -180,8 +144,8 @@ class DnDBeyondCharacterService:
         death_save_success = character.get("deathSaves", {}).get("successes", 0)
         death_save_failure = character.get("deathSaves", {}).get("failures", 0)
         exhaustion = character.get("exhaustion", 0)  # Extract exhaustion level
-        initiative_adjustment = character.get("modifiers", {}).get("initiative", 0)
-        proficiency_bonus_adjustment = character.get("modifiers", {}).get("proficiencyBonusAdjustment", 0)
+        initiative_adjustment = 0  # Set to 0
+        proficiency_bonus_adjustment = 0  # Set to 0
 
         # Inspiration
         is_inspired = character.get("inspiration", False)
@@ -196,20 +160,15 @@ class DnDBeyondCharacterService:
             6: "charisma"
         }
         attributes = []
-        for stat in character.get("stats", []):
-            stat_id = stat.get("id") or stat.get("statId")
-            base_value = stat.get("value")
-            if stat_id is not None and base_value is not None:
-                attribute_name = stat_names.get(stat_id, "Unknown")
-                total_value = DnDBeyondCharacterService.calculate_attribute_value(base_value, modifiers, stat_id, attribute_name)
-                attributes.append({
-                    "attribute_name": attribute_name,
-                    "attribute_value": total_value,
-                    "attribute_modifier": (total_value - 10) // 2  # Calculate modifier
-                })
-
-        # Debugging: Print calculated attributes
-        # print("Calculated Attributes:", attributes)
+        for stat_id, stat_name in stat_names.items():
+            stat = next((s for s in character.get("stats", []) if s.get("id") == stat_id or s.get("statId") == stat_id), None)
+            base_value = stat.get("value", 10) if stat else 10
+            total_value = DnDBeyondCharacterService.calculate_attribute_value(base_value, modifiers, stat_id, stat_name)
+            attributes.append({
+                "attribute_name": stat_name,
+                "attribute_value": total_value,
+                "attribute_adjustment": 0  # Set to 0
+            })
 
         # Skills
         skill_names = {
@@ -235,11 +194,7 @@ class DnDBeyondCharacterService:
         skills = []
         for skill_name, ability in skill_names.items():
             # Find the attribute modifier for the skill
-            attribute_modifier = 0
-            for attribute in attributes:
-                if attribute["attribute_name"] == ability:
-                    attribute_modifier = attribute["attribute_modifier"]
-                    break
+            attribute_modifier = next((attr["attribute_adjustment"] for attr in attributes if attr["attribute_name"] == ability), 0)
             
             # Check if the character is proficient in the skill
             is_proficient = any(
@@ -262,7 +217,7 @@ class DnDBeyondCharacterService:
             
             skills.append({
                 "skill_name": skill_name,
-                "skill_adjustment": skill_value,
+                "skill_adjustment": 0,  # Set to 0
                 "skill_is_proficient": is_proficient,
                 "skill_is_expertise": is_expertise
             })
@@ -279,11 +234,7 @@ class DnDBeyondCharacterService:
         saving_throws = []
         for stat_id, stat_name in saving_throw_names.items():
             # Find the attribute modifier for the saving throw
-            attribute_modifier = 0
-            for attribute in attributes:
-                if attribute["attribute_name"] == stat_name:
-                    attribute_modifier = attribute["attribute_modifier"]
-                    break
+            attribute_modifier = next((attr["attribute_adjustment"] for attr in attributes if attr["attribute_name"] == stat_name), 0)
             
             # Check if the character is proficient in the saving throw
             is_proficient = any(
@@ -295,12 +246,6 @@ class DnDBeyondCharacterService:
                 for modifier in modifiers
             )
             
-            # Debugging: Print modifiers related to saving throws
-            # print(f"Checking saving throw: {stat_name} (ID: {stat_id})")
-            # for modifier in modifiers:
-            #     if modifier.get("type") == "proficiency" and "saving-throws" in modifier.get("subType", "").lower():
-            #         print(f"Modifier: {modifier.get('subType')}, Value: {modifier.get('value')}")
-            
             # Calculate the saving throw value
             saving_throw_value = DnDBeyondCharacterService.calculate_skill_or_save_value(
                 attribute_modifier, proficiency_bonus, is_proficient, False  # Expertise does not apply to saving throws
@@ -308,9 +253,23 @@ class DnDBeyondCharacterService:
             
             saving_throws.append({
                 "saving_throw_name": stat_name,
-                "saving_throw_adjustment": saving_throw_value,
+                "saving_throw_adjustment": 0,  # Set to 0
                 "saving_throw_is_proficient": is_proficient
             })
+
+        # Hit Points
+        hit_points = [{
+            "hit_points_current": character.get("currentHp", 0),
+            "hit_points_max": character.get("maxHp", 0),
+            "hit_points_temp": character.get("tempHp", 0),
+            "non_lethal_damage": 0  # Not directly available in D&D Beyond data
+        }]
+
+        # Armor Class (AC)
+        ac = [{
+            "ac_base": character.get("armorClass", 10),
+            "ac_modified": 0  # Set to 0
+        }]
 
         # JSON structure
         return {
@@ -331,12 +290,14 @@ class DnDBeyondCharacterService:
                 "character_death_save_success": death_save_success,
                 "character_death_save_failure": death_save_failure,
                 "character_exhaustion": exhaustion,
-                "character_initiative_adjustment": initiative_adjustment,
-                "character_proficiency_bonus_adjustment": proficiency_bonus_adjustment
+                "character_initiative_adjustment": 0,  # Set to 0
+                "character_proficiency_bonus_adjustment": 0  # Set to 0
             }],
             "attributes": attributes,
             "skills": skills,
-            "saving_throws": saving_throws
+            "saving_throw_proficiencies": saving_throws,
+            "hit_points": hit_points,
+            "ac": ac
         }
 
     def get_character_info(self, url):
@@ -348,15 +309,35 @@ class DnDBeyondCharacterService:
         if not char_data:
             return {"error": "Character data could not be retrieved."}
         
-        # Debugging: Print the entire character data
-        # import json
-        # print(json.dumps(char_data, indent=4))
-        
         return self.parse_character_data(char_data)
+
+
+class DjangoDBService:
+    def __init__(self, api_url):
+        self.api_url = api_url
+
+    def send_character_data(self, character_data):
+        """
+        Sendet die Charakterdaten als POST-Anfrage an die Django-Datenbank.
+        
+        :param character_data: Die Charakterdaten, die gesendet werden sollen.
+        :return: Die Antwort der Django-API.
+        """
+        headers = {
+            'Content-Type': 'application/json',
+        }
+        
+        try:
+            response = requests.post(self.api_url, data=json.dumps(character_data), headers=headers)
+            response.raise_for_status()  # Wirft eine Ausnahme bei einem Fehlerstatuscode
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            return {"error": f"Fehler beim Senden der Daten an die Django-Datenbank: {e}"}
 
 
 # Main program
 if __name__ == "__main__":
+    # Instanz der DnDBeyondCharacterService-Klasse erstellen
     service = DnDBeyondCharacterService()
     dnd_beyond_url = input("Enter the D&D Beyond character URL: ")
     character_info = service.get_character_info(dnd_beyond_url)
@@ -364,5 +345,10 @@ if __name__ == "__main__":
     if "error" in character_info:
         print(character_info["error"])
     else:
-        import json
-        print(json.dumps(character_info, indent=4))
+        # Instanz der DjangoDBService-Klasse erstellen
+        django_api_url = "http://127.0.0.1:8000/api/stats/"
+        db_service = DjangoDBService(django_api_url)
+        
+        # Daten an die Django-Datenbank senden
+        result = db_service.send_character_data(character_info)
+        print(result)
